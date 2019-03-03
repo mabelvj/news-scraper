@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy_splash import SplashRequest
+from nytimes.items import NewsItem, NewsLoader
 
 script = """
 function main(splash)
@@ -86,14 +87,19 @@ class NewsSpider(scrapy.Spider):
         # print(response.body)
         # inspect_response(response, self)
         entries = response.xpath('//li[@data-testid="search-bodega-result"]')
-        # titles = response.xpath('//h4//text()').extract()
+
         titles = entries.xpath('//h4//text()').extract()
-        # types = response.xpath('//h4//text()').extract()
         types = entries.xpath('//p[@class="css-myxawk"]//text()').extract()
         dates = entries.xpath('//time//text()').extract()
+        entries_text = entries.xpath('//p[@class="css-1dwgixl"]//text()'
+                                     ).extract()
         if verbose:
             print('- Extracted : %s titles' % len(titles))
             print('\n', titles)
             print(types)
-        for element in zip(titles, types, dates):
-            yield {'title': element[0], 'type': element[1], 'date': element[2]}
+        for element in zip(titles, types, dates, entries_text):
+            item = NewsItem(**{'title': element[0],
+                               'entry_type': element[1],
+                               'date': element[2],
+                               'entry': element[3]})
+            yield NewsLoader(item).load_item()
