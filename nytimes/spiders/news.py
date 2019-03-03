@@ -2,6 +2,7 @@
 import scrapy
 from scrapy_splash import SplashRequest
 from nytimes.items import NewsItem, NewsLoader
+from urllib.parse import urljoin
 
 script = """
 function main(splash)
@@ -23,12 +24,12 @@ function main(splash)
     splash:set_viewport_full()
     for i=1, num_scrolls do
         scroll_to(0, get_body_height())
-        splash:wait(0.5) -- to avoid errors: TypeError: null is not an object
+        splash:wait(1.0) -- to avoid errors: TypeError: null is not an object
         local dimensions = get_dimensions()
         splash:mouse_click(dimensions.x, dimensions.y)
     end
     -- Wait split second to allow event to propagate.
-    splash:wait(0.1)
+    splash:wait(0.5)
     return splash:html()
 end
 """
@@ -38,6 +39,7 @@ class NewsSpider(scrapy.Spider):
     name = 'news'
     allowed_domains = ['www.nytimes.com']
     start_urls = ['http://www.nytimes.com/']
+    base_url = 'http://www.nytimes.com/'
 
     def __init__(self, start_date="2018/01/01", end_date="2019/01/01"):
         self.urls = [self.format_query(url, start_date, end_date)
@@ -93,13 +95,18 @@ class NewsSpider(scrapy.Spider):
         dates = entries.xpath('//time//text()').extract()
         entries_text = entries.xpath('//p[@class="css-1dwgixl"]//text()'
                                      ).extract()
+        rel_urls = entries.xpath(
+            '//p[@class="css-1dwgixl"]//ancestor::a[1]//''@href'
+        ).extract()
         if verbose:
             print('- Extracted : %s titles' % len(titles))
             print('\n', titles)
             print(types)
-        for element in zip(titles, types, dates, entries_text):
+        for element in zip(titles, types, dates, entries_text, rel_urls):
             item = NewsItem(**{'title': element[0],
                                'entry_type': element[1],
                                'date': element[2],
-                               'entry': element[3]})
+                               'entry': element[3],
+                               'url': urljoin(self.base_url,
+                                              element[4])})
             yield NewsLoader(item).load_item()

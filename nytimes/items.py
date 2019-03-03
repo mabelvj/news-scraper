@@ -15,6 +15,7 @@ class NewsItem(scrapy.Item):
     entry_type = scrapy.Field()
     date = scrapy.Field()
     entry = scrapy.Field()
+    url = scrapy.Field()
 
 
 class NewsLoader(ItemLoader):
