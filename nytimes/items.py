@@ -8,13 +8,16 @@
 import scrapy
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import Join
+from scrapy_djangoitem import DjangoItem
+from archive.models import New
 
 
-class NewsItem(scrapy.Item):
+class NewsItem(DjangoItem):
+    django_model = New
     title = scrapy.Field()
     entry_type = scrapy.Field()
+    entry_text = scrapy.Field()
     date = scrapy.Field()
-    entry = scrapy.Field()
     url = scrapy.Field()
 
 
