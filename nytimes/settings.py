@@ -23,7 +23,7 @@ BOT_NAME = 'nytimes'
 SPIDER_MODULES = ['nytimes.spiders']
 NEWSPIDER_MODULE = 'nytimes.spiders'
 
-ITEM_PIPELINES = {"scraper.pipelines.NewsPipeline": 300}
+ITEM_PIPELINES = {"nytimes.pipelines.NewsPipeline": 300}
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
