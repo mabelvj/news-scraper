@@ -10,12 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
-import sys
 import os
-
-sys.path.append('/home/projects/mysite')
-
-os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.settings'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
