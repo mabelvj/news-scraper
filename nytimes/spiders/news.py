@@ -106,7 +106,7 @@ class NewsSpider(scrapy.Spider):
             item = NewsItem(**{'title': element[0],
                                'entry_type': element[1],
                                'date': element[2],
-                               'entry': element[3],
+                               'entry_text': element[3],
                                'url': urljoin(self.base_url,
                                               element[4])})
             yield NewsLoader(item).load_item()

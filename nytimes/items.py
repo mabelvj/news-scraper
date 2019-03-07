@@ -7,14 +7,23 @@
 
 import scrapy
 from scrapy.loader import ItemLoader
-from scrapy.loader.processors import Join
+from scrapy.loader.processors import Join, MapCompose
+from scrapy_djangoitem import DjangoItem
+from archive.models import New
+import datetime
 
 
-class NewsItem(scrapy.Item):
+def process_date(d):
+    return datetime.datetime.strptime(d,
+                                      '%b. %d, %Y').strftime('%Y-%m-%d %H:%M')
+
+
+class NewsItem(DjangoItem):
+    django_model = New
     title = scrapy.Field()
     entry_type = scrapy.Field()
-    date = scrapy.Field()
-    entry = scrapy.Field()
+    entry_text = scrapy.Field()
+    date = scrapy.Field(input_processor=MapCompose(process_date))
     url = scrapy.Field()
 
 

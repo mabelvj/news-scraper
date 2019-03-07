@@ -9,10 +9,21 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
+import sys
+import os
+SPIDER_DIR = os.path.dirname(os.path.abspath(__file__))
+print(SPIDER_DIR)
+print(os.path.join(SPIDER_DIR, 'mysite'))
+sys.path.append(os.path.join(SPIDER_DIR, 'mysite'))
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.settings'
+
 BOT_NAME = 'nytimes'
 
 SPIDER_MODULES = ['nytimes.spiders']
 NEWSPIDER_MODULE = 'nytimes.spiders'
+
+ITEM_PIPELINES = {"nytimes.pipelines.NewsPipeline": 300}
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
