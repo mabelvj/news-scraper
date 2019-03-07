@@ -124,3 +124,8 @@ dmypy.json
 .venv/
 
 # End of https://www.gitignore.io/api/python
+
+.cpython-36.pyc
+.pyc
+
+*/__pycache__/
