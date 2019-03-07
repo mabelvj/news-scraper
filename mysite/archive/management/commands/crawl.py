@@ -1,7 +1,7 @@
 # commands/crawl.py
 
 from django.core.management.base import BaseCommand
-from nytimes.spiders import NewsSpider
+from nytimes.spiders.news import NewsSpider
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 

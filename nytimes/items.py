@@ -14,7 +14,8 @@ import datetime
 
 
 def process_date(d):
-    return datetime.strptime(d, '%B %d, %Y').strftime('%Y-%m-%d %%:%M')
+    return datetime.datetime.strptime(d,
+                                      '%b. %d, %Y').strftime('%Y-%m-%d %H:%M')
 
 
 class NewsItem(DjangoItem):

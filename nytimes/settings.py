@@ -16,7 +16,7 @@ print(SPIDER_DIR)
 print(os.path.join(SPIDER_DIR, 'mysite'))
 sys.path.append(os.path.join(SPIDER_DIR, 'mysite'))
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.mysite.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.settings'
 
 BOT_NAME = 'nytimes'
 
