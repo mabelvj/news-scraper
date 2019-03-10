@@ -1,0 +1,28 @@
+{% extends 'archive/base.html' %}
+
+{% block content %}
+    {% for new in news %}
+    <div>
+        <h2><a href = "{{ new.url }}" >{{ new.title }} </a></h2>
+        <p> published: {{ new.date }}, {{ new.entry_type }} </p>
+        <p>{{ new.entry_text|linebreaksbr }} </p>
+    </div>
+    {% endfor %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if news.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ news.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ news.number }} of {{ news.paginator.num_pages }}.
+            </span>
+
+            {% if news.has_next %}
+                <a href="?page={{ news.next_page_number }}">next</a>
+                <a href="?page={{ news.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{% endblock %}
